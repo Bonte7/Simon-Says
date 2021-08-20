@@ -22,8 +22,7 @@ $(document).keypress(function nextSequence(event) {
     //push the random color to the pattern array
     gamePattern.push(randomChosenColor);
 
-    //get the id for the html element and animate a flash
-    $("#" + randomChosenColor).fadeOut(100).fadeIn(100);
+    animatePress(randomChosenColor);
 
     playSound(randomChosenColor);
   }
@@ -47,7 +46,6 @@ $(".btn").click(function(event) {
 
   //animate the clicks
   animatePress(userChosenColor)
-  //$("#" + userChosenColor).fadeOut(100).fadeIn(100);
 
   playSound(userChosenColor);
 });
@@ -60,10 +58,12 @@ function playSound(name) {
 
 }
 
-//// TODO: Fix the animation function
 /*--------- Animation ---------- */
 function animatePress(currentColor) {
+  //add css class to the selected color button
+  $("#" + currentColor).addClass("pressed");
+  //remove the class after 100 miliseconds
   setTimeout(function() {
-    $("#" + currentColor).addClass(".pressed");
+    $("#" + currentColor).removeClass("pressed");
   }, 100);
 }
