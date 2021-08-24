@@ -1,61 +1,75 @@
+/*--------- Global Variables ---------- */
 //store the available colors in the game
 const buttonColors = ["red", "blue", "green", "yellow"];
-
 //store user selected colors
 let userClickedPattern = [];
-
 //array to store the color pattern for the ganme
 let gamePattern = [];
+//used to keep track of levels
+
+let level = 0;
+//used to determine is the game has started or not
+let isGameStarted = false;
 
 /*--------- Game ---------- */
-//Start a pattern sequence on keypress
-$(document).keypress(function nextSequence(event) {
+function nextSequence() {
+  //start the game and increment the level
+  isGameStarted = true;
+  level++;
+  $("#level-title").text("Level " + level);
+  //generate a random num between 0 - 3
+  let randomNum = Math.floor(Math.random() * 4);
+  //grab a random color from the array and store it
+  let randomChosenColor = buttonColors[randomNum];
+  //push the random color to the pattern array
+  gamePattern.push(randomChosenColor);
 
-//only proceed if the a key is pressed
-  if (event.key === 'a') {
-    //generate a random num between 0 - 3
-    let randomNum = Math.floor(Math.random() * 4);
+  animatePress(randomChosenColor);
 
-    //grab a random color from the array and store it
-    let randomChosenColor = buttonColors[randomNum];
+  playSound(randomChosenColor);
+}
 
-    //push the random color to the pattern array
-    gamePattern.push(randomChosenColor);
+// detect keypress to start the game
+$(document).keypress(function() {
 
-    animatePress(randomChosenColor);
-
-    playSound(randomChosenColor);
+  //make sure a key press is only handled once
+  if (isGameStarted === false){
+    nextSequence();
   }
   else {
-    console.log("Incorrect key pressed");
+    console.log("Game has already started");
   }
 
 });
+
+//// TODO: create check answer function and compare user answers to game selection
+function checkAnswer(currentLevel) {
+  console.log(currentLevel)
+  if ()
+}
 
 
 /*--------- Player ---------- */
 $(".btn").click(function(event) {
-
   //get the id for the color that was clicked
   let userChosenColor = event.currentTarget.id;
-
   //push the color that was clicked to the user array
   userClickedPattern.push(userChosenColor);
 
-  console.log(userClickedPattern);
-
+  //console.log(userClickedPattern);
   //animate the clicks
   animatePress(userChosenColor)
 
   playSound(userChosenColor);
+
+  //send the index of the last color chosen to check answer
+  checkAnswer(userClickedPattern.lastIndexOf(userChosenColor));
 });
 
 /*--------- Game Sounds ---------- */
 function playSound(name) {
-
   let audio = new Audio("sounds/" + name + ".mp3");
   audio.play();
-
 }
 
 /*--------- Animation ---------- */
