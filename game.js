@@ -16,6 +16,8 @@ function nextSequence() {
   isGameStarted = true;
   level++;
   $("#level-title").text("Level " + level);
+  //empty out the user's answerrs from the array to reset for new level
+  userClickedPattern.length = 0;
   //generate a random num between 0 - 3
   let randomNum = Math.floor(Math.random() * 4);
   //grab a random color from the array and store it
@@ -41,23 +43,26 @@ $(document).keypress(function() {
 
 });
 
-//// TODO: create check answer function and compare user answers to game selection
+//compare user answers to game selection
+
 function checkAnswer(currentLevel) {
   console.log(currentLevel)
 
   //compare the selected answer with the gamePattern
   if (userClickedPattern[currentLevel] === gamePattern[currentLevel]) {
-
     console.log("success");
-
-    //delay the next sequence call
-    setTimeout(function() {
-      nextSequence();
-    }, 1000);
-
+    // also check to see if the user has complated the sequence
+    if(userClickedPattern.length === gamePattern.length) {
+      //delay the next sequence call
+      setTimeout(function() {
+        nextSequence();
+      }, 1000);
+    }
   }
+  //// TODO: Handle lose situations and reset the game
   else {
     console.log("wrong");
+    level = 0;
   }
 }
 
