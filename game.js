@@ -3,10 +3,9 @@
 const buttonColors = ["red", "blue", "green", "yellow"];
 //store user selected colors
 let userClickedPattern = [];
-//array to store the color pattern for the ganme
+//array to store the color pattern for the game
 let gamePattern = [];
 //used to keep track of levels
-
 let level = 0;
 //used to determine is the game has started or not
 let isGameStarted = false;
@@ -45,7 +44,21 @@ $(document).keypress(function() {
 //// TODO: create check answer function and compare user answers to game selection
 function checkAnswer(currentLevel) {
   console.log(currentLevel)
-  if ()
+
+  //compare the selected answer with the gamePattern
+  if (userClickedPattern[currentLevel] === gamePattern[currentLevel]) {
+
+    console.log("success");
+
+    //delay the next sequence call
+    setTimeout(function() {
+      nextSequence();
+    }, 1000);
+
+  }
+  else {
+    console.log("wrong");
+  }
 }
 
 
@@ -55,13 +68,10 @@ $(".btn").click(function(event) {
   let userChosenColor = event.currentTarget.id;
   //push the color that was clicked to the user array
   userClickedPattern.push(userChosenColor);
-
-  //console.log(userClickedPattern);
   //animate the clicks
   animatePress(userChosenColor)
 
   playSound(userChosenColor);
-
   //send the index of the last color chosen to check answer
   checkAnswer(userClickedPattern.lastIndexOf(userChosenColor));
 });
